@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>URL Shortener</title>
+  <style>
+    :root { --bg:#fff; --fg:#1a1a1a; --muted:#555; --line:#ddd; --card:#f6f8fa; --accent:#0b5fff; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg:#12141a; --fg:#e8e8e8; --muted:#a0a4ad; --line:#2d3340; --card:#1b1f29; --accent:#6ea0ff; }
+    }
+    * { box-sizing: border-box; }
+    body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.6 system-ui, sans-serif; }
+    main { max-width: 960px; margin: 0 auto; padding: 32px 16px 64px; }
+    h1 { margin: 0 0 4px; }
+    h2 { margin-top: 40px; }
+    a { color: var(--accent); }
+    .sub { color: var(--muted); margin: 0 0 20px; }
+    .stack { display:flex; gap:8px; flex-wrap:wrap; margin-bottom: 24px; }
+    .tag { background:var(--card); border:1px solid var(--line); border-radius:999px; padding:2px 12px; font-size:14px; }
+    figure { margin: 24px 0; }
+    figure img { width:100%; border:1px solid var(--line); border-radius:8px; }
+    figcaption { color:var(--muted); font-size:14px; margin-top:6px; }
+    .note { background:var(--card); border:1px solid var(--line); border-radius:8px; padding:12px 16px; }
+    table { border-collapse:collapse; width:100%; font-size:15px; }
+    th, td { border:1px solid var(--line); padding:8px; text-align:left; vertical-align:top; }
+    th { background:var(--card); }
+    code { background:var(--card); padding:1px 5px; border-radius:4px; font-size:90%; }
+    .table-wrap { overflow-x:auto; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>URL Shortener</h1>
+  <p class="sub">Turn long links into short ones and track every click.</p>
+  <div class="stack">
+    <span class="tag">Node.js</span><span class="tag">Express 5</span><span class="tag">MongoDB</span><span class="tag">Mongoose</span><span class="tag">EJS</span>
+  </div>
+  <p><a href="https://github.com/achellesheel/url-shortner">View source on GitHub</a></p>
+
+  <div class="note">
+    <strong>About this page:</strong> GitHub Pages only serves static files, so the working app (Node server and MongoDB) can't run here. This page shows what the project does. To try it, clone the repo and follow the run steps in the README.
+  </div>
+
+  <h2>Screenshots</h2>
+  <figure>
+    <img src="images/home.png" alt="Home page with the URL form, a success banner and the table of all URLs with click counts">
+    <figcaption>Home: generate a link and see all URLs with their click counts.</figcaption>
+  </figure>
+  <figure>
+    <img src="images/analytics.png" alt="Analytics page showing original URL, total clicks and a table of visits">
+    <figcaption>Analytics: original URL, total clicks and each visit's time and browser.</figcaption>
+  </figure>
+
+  <h2>Functionality</h2>
+  <ul>
+    <li>Generate a unique short ID for any URL (<code>POST /url</code>), from the form or as JSON.</li>
+    <li>Redirect from <code>/url/:shortId</code>, adding <code>https://</code> when it's missing.</li>
+    <li>Record every visit with a timestamp and the visitor's user-agent.</li>
+    <li>Analytics page per link at <code>/url/analytics/:shortId/view</code>.</li>
+    <li>Home page table of all links with click counts.</li>
+  </ul>
+
+  <h2>Challenging bugs and fixes</h2>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Symptom</th><th>Cause</th><th>Fix</th></tr></thead>
+    <tbody>
+      <tr><td><code>Cannot POST /</code> in Postman</td><td>Router mounted at <code>/url</code></td><td>Send the request to <code>/url</code></td></tr>
+      <tr><td>EJS: could not find matching close tag</td><td><code>&lt;%})&gt;</code> instead of <code>&lt;% }) %&gt;</code></td><td>Close tags with <code>%&gt;</code></td></tr>
+      <tr><td><code>urls is not defined</code></td><td>Template rendered without data</td><td>Query MongoDB and pass <code>{ urls }</code></td></tr>
+      <tr><td><code>Cannot GET /ejs/&lt;id&gt;</code></td><td>Wrong base path for short links</td><td>Link to <code>/url/&lt;id&gt;</code></td></tr>
+      <tr><td>Generate button just reloaded the page</td><td>Typo <code>&lt;formb</code> so no form existed</td><td>Use <code>&lt;form method="POST" action="/url"&gt;</code></td></tr>
+      <tr><td>400 "url is required" from the form</td><td>Only <code>express.json()</code> was registered</td><td>Add <code>express.urlencoded()</code></td></tr>
+      <tr><td>Syntax error in <code>shortened.ejs</code></td><td>Braces inside the tag and <code>=%&gt;</code></td><td>Use <code>&lt;%= shortenedURL %&gt;</code></td></tr>
+      <tr><td>Analytics page always errored</td><td><code>URL.findOne</code> used the global <code>URL</code> class</td><td>Use the Mongoose model</td></tr>
+      <tr><td>List vanished after generating a link</td><td>Separate result page without the list</td><td>Render <code>home</code> with the new <code>id</code> and full <code>urls</code></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>The full list is in the <a href="https://github.com/achellesheel/url-shortner#challenging-bugs-and-how-we-fixed-them">README</a>.</p>
+</main>
+</body>
+</html>
