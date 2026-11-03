@@ -1,0 +1,29 @@
+we ned to design a URL shortner
+
+it should take a URL and return a shortened URL
+
+try to maintain total clicks
+
+ROUTES
+
+POST / URL => generate a new SHORT URL and return a shortened URL.
+
+GET /url/:shortid => redirect the user to the original url!!
+
+GET / url / analytics/:shortid => number of clicks for shortened URL
+
+Affiliate link --> Shirtened url that tracks hoe masny clicks happened via "my link"
+
+npm init --> i express --> i nodemon --> i mongoose
+
+// huge url --> share a product on myntra or flipkart --> Since, carryinglot pf info in their urls.
+
+// Affiliate links --> Influencers @ get paid commission.
+
+
+next js: server side rendering --> my server shipping html files --> Constructing or getting html files
+React js --> Html construction on client side
+
+If i send string --> vthen it gets converted into html (by client)
+
+ejs--> generate html with plain jsx.

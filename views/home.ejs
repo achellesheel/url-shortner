@@ -1,0 +1,92 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home page</title>
+</head>
+<body>
+    <h1>hey from ejs via express</h1>
+    <h1>   URL shortner</h1>
+    <div>
+        <form method="POST" action="/url">
+            <label>Enter your URL</label>
+            <input type="text" name="redirectURL" placeholder="https://www.youtube.com/"/>
+            <button type="submit">Generate</button>
+        </form>
+    </div>
+    <ul>
+    <% urls.forEach(url => { %>
+        <li>
+            <%= url.shortId %> - <%= url.redirectURL %>
+        </li>s
+    <% }) %>
+    </ul>
+</body>
+</html> -->
+
+
+<!-- views/home.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>URL Shortener</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    .success-box { background: #e6fffa; border: 1px solid #38b2d6; padding: 10px; margin-bottom: 20px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background-color: #f4f4f4; }
+  </style>
+</head>
+<body>
+  <h1>URL Shortener</h1>
+
+  <!-- MERGED FROM shortened.ejs: Displays only after URL generation -->
+  <% if (locals.id) { %>
+    <div class="success-box">
+      <p>Short URL Generated: 
+        <a href="/url/<%= id %>" target="_blank">http://localhost:3000/url/<%= id %></a>
+      </p>
+    </div>
+  <% } %>
+
+  <div>
+    <form method="POST" action="/url">
+      <label>Enter your URL:</label>
+      <input type="text" name="redirectURL" placeholder="https://www.youtube.com/" required style="width: 300px; padding: 5px;"/>
+      <button type="submit" style="padding: 5px 10px;">Generate</button>
+    </form>
+  </div>
+
+  <h2>All URLs</h2>
+  <% if (locals.urls && urls.length > 0) { %>
+    <table>
+      <thead>
+        <tr>
+          <th>S.No</th>
+          <th>Short ID</th>
+          <th>Redirect Link</th>
+          <th>Clicks</th>
+          <th>Analytics</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% urls.forEach((url, index) => { %>
+          <tr>
+            <td><%= index + 1 %></td>
+            <td><a href="/url/<%= url.shortId %>" target="_blank"><%= url.shortId %></a></td>
+            <td><%= url.redirectURL %></td>
+            <td><%= url.visitHistory ? url.visitHistory.length : 0 %></td>
+            <td><a href="/url/analytics/<%= url.shortId %>/view" target="_blank">View Analytics</a></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } else { %>
+    <p>No URLs created yet.</p>
+  <% } %>
+</body>
+</html>
