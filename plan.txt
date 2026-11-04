@@ -27,3 +27,44 @@ React js --> Html construction on client side
 If i send string --> vthen it gets converted into html (by client)
 
 ejs--> generate html with plain jsx.
+
+server side rendering --> If HTML construction happening on server side
+react --> Client side rendering --> React makes packets of js files and it generates html and css files --> 
+IT CONSTRUCTS HTML ON CLIENT'S MACHINE.
+<div id="root
+
+bugs
+1. data is not getting refreshed --> we need to fix this
+2. Try to merge shortened.ejs and home.ejs
+
+
+Authentication
+Authentication:
+Sign up
+mail id, ohno, first name, last name, password
+
+then hash id is generated, stored and sent to browser.
+
+On every request server will verfiy your hash id. 
+
+Headers --> to connect between servers and browsers. 
+servewr will verify Hash id --> server will get hash id via HEADERS or COOKIES.
+
+whne we login --> server generates a sessionid --> uuidv4
+
+Bug --> we are saving password. 
+UI for signup and sign in
+
+if someone is trying to access shortened URLs can we
+first check if they are authenticated or not.
+What our middleware will do --> is just check if user is logged in or not.
+
+Now plan-->
+1. User model
+2. 
+3. SignUp Controller / User controller
+4.
+5.
+6. Sign in controller (half done)
+7. User auth middleware
+8. we need to handle homepage ("/) via middleware

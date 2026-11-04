@@ -4,8 +4,10 @@ const UrlModel = require("./models/url");
 const urlRoute = require("./routes/url");
 const { connectToMongoDB } = require("./connect"); //middleware
 const cookieParser = require('cookie-parser');
-
+const staticRoute = require("./routes/staticrouter");
+const { restrictToLoggedInUserOnly } = require("./middlewares/auth");
 const app = express();
+const userRoute = require("./routes/user");
 const PORT = 3000;
 
 connectToMongoDB("mongodb://127.0.0.1:27017/short-urls")
@@ -22,6 +24,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json()); // middleware only for raw json
 app.use(cookieParser());
 
+app.use("/user", userRoute); // all routes starting with /user will be handled by userRoute
+app.use("/", staticRoute); // all routes starting with / will be handled by staticRoute
+
 // app.get("/ejs", (req,res)=> {
 //     res.render("home");
 // });
@@ -31,12 +36,14 @@ app.get("/ejs", async (req, res) => {
     return res.render("home", { urls });
 });
 
-app.get("/", async (req, res) => {
-    const allUrls = await UrlModel.find({});
-    //const people = "code kerdos";
-    //res.render("home",{title:'Home', people});
-    res.render("home", {urls:allUrls});
-});
+// app.get("/", async (req, res) => {
+//     const allUrls = await UrlModel.find({});
+//     //const people = "code kerdos";
+//     //res.render("home",{title:'Home', people});
+//     res.render("home", {urls:allUrls});
+// });
+
+app.use("/",restrictToLoggedInUserOnly,staticRoute); //middleware to restrict access to logged in users only.);
 
 // app.get('/html',async (req ,res) => {
 //     const allUrls = await UrlModel.find({});
